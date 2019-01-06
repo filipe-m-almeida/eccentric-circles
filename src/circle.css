@@ -1,0 +1,50 @@
+.outer {
+  position: relative;
+}
+
+.label {
+  font: 14px Arial;
+  text-anchor: middle;
+  alignment-baseline: central;
+}
+
+.width {
+  font: 12px Arial;
+  composes: label;
+}
+
+.circle {
+  cy: 70;
+  cx: 70;
+  stroke-width: 4;
+  fill-opacity: 0;
+}
+
+.small {
+  composes: circle;
+  r: 40;
+}
+.big {
+  composes: circle;
+  r: 60;
+}
+
+div {
+  float: left;
+}
+
+body {
+  display:table;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: black;
+}
+
+.middle {
+  padding: 1px;
+  transition: width 1s;
+}
+
+.no-transition {
+  transition: none !important;
+}

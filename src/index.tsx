@@ -13,18 +13,19 @@ class EccentricCircles extends React.Component {
       originalGap: 0,
       left: 0,
       top: 0,
-      bo: true
+      bo: true,
+      saturation: 0
     }
   }
   render() {
     return <div className={style.outer} style={{left: this.state.left, top: this.state.top}}>
       <div id="left">
-        <LeftCircle gap={this.state.gap} depth={this.state.depth} bo={this.state.bo}/>
+        <LeftCircle gap={this.state.gap} depth={this.state.depth} bo={this.state.bo} saturation={this.state.saturation}/>
         </div>
       <div className={style.middle} style={{width : this.state.gap}}>
       </div>
       <div id="right">
-        <RightCircle gap={this.state.gap} depth={this.state.depth} bo={this.state.bo}/>
+        <RightCircle gap={this.state.gap} depth={this.state.depth} bo={this.state.bo} saturation={this.state.saturation}/>
       </div>
     </div>;
   }
@@ -60,8 +61,18 @@ decGap() {
   this.setGap(Math.max(0, this.state.gap - 10));
 }
 
-rel(state, rel) {
-  this.setState({[state]: this.state[state] + rel});
+rel(state, rel, min : number, max: number) {
+  let value = this.state[state] + rel;
+
+  if (is_defined(min)) {
+    value = Math.max(value, min);
+  }
+
+  if (is_defined(max)) {
+    value = Math.min(value, max);
+  }
+
+  this.setState({[state]: value});
   console.log(`${state}: ${this.state[state]}`);
 }
 
@@ -80,10 +91,6 @@ var keybindings = {
 
 handleKey(evt: KeyboardEvent) {
 //    evt = evt || window.event;
-
-    if (evt.key >= "1" && evt.key <= "9") {
-      this.setGap(evt.key * 10 - 10);
-    }
 
     switch(evt.key) {
       case "d":
@@ -114,6 +121,12 @@ handleKey(evt: KeyboardEvent) {
         this.setState({bo: !this.state.bo});
         console.log("state = " + this.state.bo);
       break;
+      case "2":
+        this.rel("saturation", 10, 0, 255);
+        break;
+      case "1":
+        this.rel("saturation", -10, 0, 255);
+        break;
     }
 }
 
@@ -134,3 +147,7 @@ ReactDOM.render(
   <EccentricCircles/>,
   document.getElementById("root")
 );
+
+function is_defined(value : any) {
+  return (!(typeof value === 'undefined'));
+}

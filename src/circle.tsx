@@ -36,11 +36,15 @@ export class LeftCircle extends React.Component {
     super();
   }
 
+  // TODO(filipe): Extract into a common class
   static getDerivedStateFromProps(props, current_state) {
-    var color = props.bo ? "red" : "blue";
-      return {
-        color: color,
-      }
+    let saturation = props.saturation;
+    let color = props.bo ? `rgb(255, ${saturation}, ${saturation}, 255)` : `rgb(${saturation}, ${saturation}, 255)`;
+    console.log(color);
+
+    return {
+      color: color,
+    }
   }
 
 
@@ -57,10 +61,13 @@ export class RightCircle extends React.Component {
   }
 
   static getDerivedStateFromProps(props, current_state) {
-    var color = props.bo ? "blue" : "red";
-      return {
-        color: color,
-      }
+    let saturation = props.saturation;
+    let color = props.bo ? `rgb(${saturation}, ${saturation}, 255)` : `rgb(255, ${saturation}, ${saturation})`;
+    console.log(color);
+
+    return {
+      color: color,
+    }
   }
 
 

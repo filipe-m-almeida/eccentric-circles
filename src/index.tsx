@@ -4,7 +4,7 @@ import {LeftCircle, RightCircle} from "./circle.tsx";
 import style from "./circle.css";
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('G-Q9GCYVY9NL');
+ReactGA.initialize('G-8KV61CM6PE');
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 class EccentricCircles extends React.Component {

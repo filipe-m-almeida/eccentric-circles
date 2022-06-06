@@ -1,0 +1,4 @@
+[submodule "dist"]
+	path = dist
+	url = https://github.com/filipe-m-almeida/eccentric-circles.git
+	branch = gh-pages

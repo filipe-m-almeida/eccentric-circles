@@ -20,9 +20,12 @@ class EccentricCircles extends React.Component {
       bo: true,
       saturation: 0
     }
+
+    this.onClick = this.onClick.bind(this);
+    this.myRef = React.createRef();
   }
   render() {
-    return <div className={style.outer} style={{left: this.state.left, top: this.state.top}}>
+    return <div ref={this.myRef} onClick={this.onClick} className={style.outer} style={{left: this.state.left, top: this.state.top}}>
       <div id="left">
         <LeftCircle gap={this.state.gap} depth={this.state.depth} bo={this.state.bo} saturation={this.state.saturation}/>
         </div>
@@ -34,14 +37,34 @@ class EccentricCircles extends React.Component {
     </div>;
   }
 
-componentWillMount() {
+componentDidMount() {
   document.addEventListener("keydown", this.handleKey.bind(this));
   document.addEventListener("touchstart", this.touchStart.bind(this));
-  document.addEventListener("touchmove", this.touchMove.bind(this));
+  document.addEventListener("touchomove", this.touchMove.bind(this));
+  this.lockChange = this.lockChange.bind(this);
+  this.onMouseMove = this.onMouseMove.bind(this);
+  document.addEventListener("pointerlockchange", this.lockChange);
 }
 
 componentWillUnMount() {
   document.removeEventListener("keydown", this.handleKey.bind(this));
+}
+
+lockChange(e : Event) {
+  if (!document.pointerLockElement) {
+    document.removeEventListener("mousemove", this.onMouseMove);
+  }
+}
+
+onMouseMove(e : MouseEvent) {
+  console.log("Test");
+  this.rel("left", e.movementX);
+  this.rel("top", e.movementY);
+}
+
+onClick(e) {
+  document.addEventListener("mousemove", this.onMouseMove);
+  this.myRef.current.requestPointerLock();
 }
 
 setLeft(left: number) {

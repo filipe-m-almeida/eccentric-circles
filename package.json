@@ -1,40 +1,20 @@
 {
-  "name": "eccentric-circles",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "eccentric-circles-vue",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "webpack --mode development",
-    "build": "webpack --mode production",
-    "watch": "webpack --watch --mode development",
-    "open": "open dist/index.html"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/filipe-m-almeida/eccentric-circles.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/filipe-m-almeida/eccentric-circles/issues"
-  },
-  "homepage": "https://github.com/filipe-m-almeida/eccentric-circles#readme",
   "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-ga": "^3.3.0"
+    "konva": "^9.0.2",
+    "vue": "^3.2.47",
+    "vue-konva": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/preset-react": "^7.10.4",
-    "@babel/preset-typescript": "^7.10.4",
-    "@types/css-modules": "^1.0.0",
-    "@types/react": "^16.9.41",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^3.6.0",
-    "html-webpack-plugin": "^4.3.0",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "@vitejs/plugin-vue": "^4.1.0",
+    "vite": "^4.3.2"
   }
 }

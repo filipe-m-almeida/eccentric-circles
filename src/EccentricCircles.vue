@@ -1,8 +1,12 @@
 <template>
   <v-stage :config="stageConfig" ref="stage" @mousedown="toggleDrag" @mousemove="doDrag" @mouseleave="endDrag">
     <v-layer>
-      <CircleGroup :groupConfig="leftGroupConfig" />
-      <CircleGroup :groupConfig="rightGroupConfig" />
+      <transition name="circle-slide">
+        <CircleGroup :groupConfig="leftGroupConfig" :key="leftGroupConfig.x" />
+      </transition>
+      <transition name="circle-slide">
+        <CircleGroup :groupConfig="rightGroupConfig" :key="rightGroupConfig.x" />
+      </transition>
     </v-layer>
     <!-- Debug Overlay -->
   </v-stage>
@@ -103,9 +107,25 @@ export default {
       document.body.style.cursor = 'auto'; // Show cursor
     },
     switchPositions() {
-      const tempX = this.leftGroupConfig.x;
-      this.leftGroupConfig.x = this.rightGroupConfig.x;
-      this.rightGroupConfig.x = tempX;
+      // Add animation by updating the positions gradually over time
+      const animationDuration = 750; // Adjust as needed
+      const startTime = Date.now();
+      const startX1 = this.leftGroupConfig.x;
+      const startX2 = this.rightGroupConfig.x;
+      const endX1 = startX2;
+      const endX2 = startX1;
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / animationDuration, 1);
+        const newX1 = startX1 + (endX1 - startX1) * progress;
+        const newX2 = startX2 + (endX2 - startX2) * progress;
+        this.leftGroupConfig.x = newX1;
+        this.rightGroupConfig.x = newX2;
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      animate();
     },
   },
   created() {

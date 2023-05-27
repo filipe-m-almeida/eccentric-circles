@@ -37,7 +37,7 @@ export default {
         x: window.innerWidth / 2 - 30,
         y: window.innerHeight / 2,
         translate: -10,
-        color: 'rgb(0, 255, 0)',
+        color: 'rgb(0, 0, 255)',
         depth: 0.4,
         strokeWidth: 4
       },

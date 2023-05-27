@@ -59,11 +59,6 @@ export default {
     }
   },
   methods: {
-    updateColor() {
-      const saturation = this.saturation;
-      this.leftGroupConfig.color = this.colorSwitch ? `rgb(${saturation}, ${saturation}, 255)` : `rgb(255, ${saturation}, ${saturation})`;
-      this.rightGroupConfig.color = this.colorSwitch ? `rgb(255, ${saturation}, ${saturation})` : `rgb(${saturation}, ${saturation}, 255)`;
-    },
     adjustGap(increment) {
         this.gap = Math.max(0, this.gap + (increment * 10));
         this.leftGroupConfig.x -= increment * 10;
@@ -106,7 +101,12 @@ export default {
     endDrag() {
       this.isDragging = false;
       document.body.style.cursor = 'auto'; // Show cursor
-    }
+    },
+    switchPositions() {
+      const tempX = this.leftGroupConfig.x;
+      this.leftGroupConfig.x = this.rightGroupConfig.x;
+      this.rightGroupConfig.x = tempX;
+    },
   },
   created() {
     window.addEventListener('keydown', e => {
@@ -131,10 +131,6 @@ export default {
         case 'ArrowDown':
           this.moveGroups(0, e.key === 'ArrowDown' ? 10 : -10);
           break;
-        case ' ':
-          this.colorSwitch = !this.colorSwitch;
-          this.updateColor();
-          break;
         case '2':
           this.adjustSaturation(10);
           break;
@@ -146,6 +142,9 @@ export default {
           break;
         case '/':
           this.debugVisible = !this.debugVisible;
+          break;
+        case ' ': // Spacebar
+          this.switchPositions();
           break;
       }
     });

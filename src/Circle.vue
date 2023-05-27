@@ -1,7 +1,6 @@
 <template>
-  <v-circle :config="config" :stroke="config.stroke" globalCompositeOperation="source-over" />
+  <v-circle v-bind="config" globalCompositeOperation="source-over" />
 </template>
-
 
 <script>
 export default {

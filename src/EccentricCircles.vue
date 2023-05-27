@@ -1,11 +1,8 @@
 <template>
   <v-stage :config="stageConfig" ref="stage" @mousedown="toggleDrag" @mousemove="doDrag" @mouseleave="endDrag">
     <v-layer>
-      <transition name="circle-slide">
-        <CircleGroup :groupConfig="leftGroupConfig" :key="leftGroupConfig.x" />
-      </transition>
-      <transition name="circle-slide">
-        <CircleGroup :groupConfig="rightGroupConfig" :key="rightGroupConfig.x" />
+      <transition name="circle-slide" v-for="(group, index) in [leftGroupConfig, rightGroupConfig]" :key="group.x">
+        <CircleGroup :groupConfig="group" />
       </transition>
     </v-layer>
     <!-- Debug Overlay -->
@@ -123,47 +120,34 @@ export default {
       };
       animate();
     },
+    createKeydownHandler() {
+        return (e) => {
+          const map = {
+            'd': () => this.adjustGap(1),
+            'a': () => this.adjustGap(-1),
+            'w': () => this.adjustStrokeWidth(1),
+            's': () => this.adjustStrokeWidth(-1),
+            'ArrowLeft': () => this.moveGroups(-10, 0),
+            'ArrowRight': () => this.moveGroups(10, 0),
+            'ArrowUp': () => this.moveGroups(0, -10),
+            'ArrowDown': () => this.moveGroups(0, 10),
+            '2': () => this.adjustSaturation(10),
+            '1': () => this.adjustSaturation(-10),
+            'Escape': () => this.endDrag(),
+            '/': () => this.debugVisible = !this.debugVisible,
+            ' ': () => this.switchPositions(), // Spacebar
+          };
+
+        const action = map[e.key];
+        if (action) {
+          action();
+        }
+      }
+    }
   },
   created() {
-    window.addEventListener('keydown', e => {
-      switch (e.key) {
-        case 'd':
-          this.adjustGap(1);
-          break;
-        case 'a':
-          this.adjustGap(-1);
-          break;
-        case 'w':
-          this.adjustStrokeWidth(1);
-          break;
-        case 's':
-          this.adjustStrokeWidth(-1);
-          break;
-        case 'ArrowLeft':
-        case 'ArrowRight':
-          this.moveGroups(e.key === 'ArrowRight' ? 10 : -10, 0);
-          break;
-        case 'ArrowUp':
-        case 'ArrowDown':
-          this.moveGroups(0, e.key === 'ArrowDown' ? 10 : -10);
-          break;
-        case '2':
-          this.adjustSaturation(10);
-          break;
-        case '1':
-          this.adjustSaturation(-10);
-          break;
-        case 'Escape':
-          this.endDrag();
-          break;
-        case '/':
-          this.debugVisible = !this.debugVisible;
-          break;
-        case ' ': // Spacebar
-          this.switchPositions();
-          break;
-      }
-    });
+    this.keydownHandler = this.createKeydownHandler();
+    window.addEventListener('keydown', this.keydownHandler);
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.keydownHandler);

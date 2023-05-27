@@ -1,7 +1,9 @@
+/* File src/CircleGroup.vue */
+
 <template>
   <v-group>
-    <Circle :config="circleConfig('big')" />
-    <Circle :config="circleConfig('small')" />
+    <Circle :config="bigCircleConfig" />
+    <Circle :config="smallCircleConfig" />
     <v-text :config="textConfig" />
   </v-group>
 </template>
@@ -17,15 +19,11 @@ export default {
     groupConfig: Object
   },
   computed: {
-    circleConfig() {
-      return type => ({
-        x: this.groupConfig.x + (type === 'small' ? this.groupConfig.translate * this.groupConfig.depth : 0),
-        y: this.groupConfig.y,
-        radius: type === 'big' ? 60 : 40,
-        stroke: this.groupConfig.color,
-        strokeWidth: this.groupConfig.strokeWidth || 4,
-        globalCompositeOperation: "lighter",
-      });
+    bigCircleConfig() {
+      return this.createCircleConfig('big');
+    },
+    smallCircleConfig() {
+      return this.createCircleConfig('small');
     },
     textConfig() {
       return {
@@ -38,6 +36,18 @@ export default {
         globalCompositeOperation: "lighter"
       }
     }
+  },
+  methods: {
+    createCircleConfig(type) {
+      return {
+        x: this.groupConfig.x + (type === 'small' ? this.groupConfig.translate * this.groupConfig.depth : 0),
+        y: this.groupConfig.y,
+        radius: type === 'big' ? 60 : 40,
+        stroke: this.groupConfig.color,
+        strokeWidth: this.groupConfig.strokeWidth || 4,
+        globalCompositeOperation: "lighter",
+      };
+    },
   }
 }
 </script>

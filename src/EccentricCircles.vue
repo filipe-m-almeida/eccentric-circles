@@ -4,7 +4,11 @@
       <CircleGroup :groupConfig="leftGroupConfig" />
       <CircleGroup :groupConfig="rightGroupConfig" />
     </v-layer>
+    <!-- Debug Overlay -->
   </v-stage>
+  <div v-if="debugVisible" class="debug-overlay">
+    <pre>{{ debugData }}</pre>
+  </div>
 </template>
 
 <script>
@@ -23,6 +27,7 @@ export default {
       isDragging: false,
       lastPosX: 0,
       lastPosY: 0,
+      debugVisible: false,
       stageConfig: {
         width: window.innerWidth,
         height: window.innerHeight
@@ -43,6 +48,14 @@ export default {
         depth: 0.4,
         strokeWidth: 4
       }
+    }
+  },
+  computed: {
+    debugData() {
+      return JSON.stringify(this.$data, null, 2)
+      .replace(/[{},"]/g, '')
+      .replace(/^\s*[\r\n]/gm, '');
+
     }
   },
   methods: {
@@ -131,6 +144,9 @@ export default {
         case 'Escape':
           this.endDrag();
           break;
+        case '/':
+          this.debugVisible = !this.debugVisible;
+          break;
       }
     });
   },
@@ -144,5 +160,19 @@ export default {
 body {
   background-color: black;
   overflow: hidden;
+}
+
+.debug-overlay {
+  position: fixed; /* Use 'fixed' instead of 'absolute' for consistent positioning */
+  bottom: 10px; /* Position the overlay at the bottom */
+  right: 10px; /* Position the overlay at the right */
+  z-index: 9999;
+  background-color: rgba(0, 30, 0, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #00ff00;
+  pointer-events: none;
 }
 </style>

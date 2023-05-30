@@ -1,5 +1,5 @@
 <template>
-  <v-circle v-bind="config" globalCompositeOperation="source-over" />
+  <v-circle v-bind="config" globalCompositeOperation="lighter" />
 </template>
 
 <script>

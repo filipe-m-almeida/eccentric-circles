@@ -34,7 +34,7 @@ export default {
         height: window.innerHeight
       },
       leftGroupConfig: {
-        x: window.innerWidth / 2 - 30,
+        x: window.innerWidth / 2,
         y: window.innerHeight / 2,
         translate: -10,
         color: 'rgb(0, 0, 255)',
@@ -42,7 +42,7 @@ export default {
         strokeWidth: 4
       },
       rightGroupConfig: {
-        x: window.innerWidth / 2 + 30,
+        x: window.innerWidth / 2,
         y: window.innerHeight / 2,
         translate: 10,
         color: 'rgb(255, 0, 0)',
@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     adjustGap(increment) {
-        this.gap = Math.max(0, this.gap + (increment * 10));
+        this.gap += (increment * 10);
         this.leftGroupConfig.x -= increment * 10;
         this.rightGroupConfig.x += increment * 10;
     },

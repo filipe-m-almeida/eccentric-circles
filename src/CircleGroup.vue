@@ -5,6 +5,7 @@
     <Circle :config="bigCircleConfig" />
     <Circle :config="smallCircleConfig" />
     <v-text :config="textConfig" />
+    <v-text :config="gapTextConfig" />
   </v-group>
 </template>
 
@@ -13,10 +14,11 @@ import Circle from "./Circle.vue";
 
 export default {
   components: {
-    Circle,
+    Circle
   },
   props: {
-    groupConfig: Object
+    groupConfig: Object,
+    gap: Number
   },
   computed: {
     bigCircleConfig() {
@@ -34,8 +36,19 @@ export default {
         fill: this.groupConfig.color,
         align: 'center',
         globalCompositeOperation: "lighter"
-      }
-    }
+      };
+    },
+    gapTextConfig() {
+      return {
+        x: this.groupConfig.x - 10,
+        y: this.groupConfig.y + 80,
+        text: this.gap.toString(),
+        fontSize: 20,
+        fill: this.groupConfig.color,
+        align: 'center',
+        globalCompositeOperation: "lighter"
+      };
+    },
   },
   methods: {
     createCircleConfig(type) {

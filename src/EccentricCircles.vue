@@ -2,7 +2,7 @@
   <v-stage :config="stageConfig" ref="stage" @mousedown="toggleDrag" @mousemove="doDrag" @mouseleave="endDrag">
     <v-layer>
       <transition name="circle-slide" v-for="(group, index) in [leftGroupConfig, rightGroupConfig]" :key="group.x">
-        <CircleGroup :groupConfig="group" />
+        <CircleGroup :groupConfig="group" :gap="gap" />
       </transition>
     </v-layer>
     <!-- Debug Overlay -->

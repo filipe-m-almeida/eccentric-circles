@@ -121,9 +121,8 @@ export default {
       this.isDragging = false;
       document.body.style.cursor = 'auto'; // Show cursor
     },
-    switchPositions() {
+    switchPositions(animationDuration = 2000) {
       // Add animation by updating the positions gradually over time
-      const animationDuration = 2000; // Adjust as needed
       const startTime = Date.now();
       const startX1 = this.leftGroupConfig.x;
       const startX2 = this.rightGroupConfig.x;
@@ -142,7 +141,7 @@ export default {
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else if (this.isCycling) {  // check if isCycling is true at the end of the animation
-          this.switchPositions();  // re-call switchPositions to create the loop effect
+          this.switchPositions(animationDuration);  // re-call switchPositions to create the loop effect
         }
       };
       animate();
@@ -156,19 +155,25 @@ export default {
       this.commandPromptVisible = false;
     },
     executeCommand() {
-      switch (this.commandInput) {
+      const parts = this.commandInput.split(' ');
+      const command = parts[0];
+      const params = parts.slice(1);
+
+      switch (command) {
         case 'cycle':
-          this.isCycling = true;  // set isCycling to true when 'cycle' command is executed
-          this.switchPositions();
+          this.isCycling = true;
+          const duration = params[0] ? parseInt(params[0], 10) : 2000;
+          this.switchPositions(duration);
           break;
-        case 'stop':  // add a 'stop' command to stop the animation loop
+        case 'stop':
           this.isCycling = false;
           break;
         default:
           console.log(`Unknown command: ${this.commandInput}`);
           break;
       }
-      this.commandInput = '';  // Clear the command input field
+
+      this.commandInput = '';
     },
     createKeyupHandler() {
       return (e) => {

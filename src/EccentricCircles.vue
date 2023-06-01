@@ -130,6 +130,9 @@ export default {
         const newX2 = startX2 + (endX2 - startX2) * progress;
         this.leftGroupConfig.x = newX1;
         this.rightGroupConfig.x = newX2;
+
+        this.gap = this.rightGroupConfig.x - this.leftGroupConfig.x;
+        
         if (progress < 1) {
           requestAnimationFrame(animate);
         }

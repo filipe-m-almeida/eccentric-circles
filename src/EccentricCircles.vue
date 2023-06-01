@@ -50,6 +50,7 @@ export default {
       debugVisible: false,
       commandPromptVisible: false,
       commandInput: '',
+      isCycling: false,
       stageConfig: {
         width: window.innerWidth,
         height: window.innerHeight
@@ -140,11 +141,13 @@ export default {
         
         if (progress < 1) {
           requestAnimationFrame(animate);
+        } else if (this.isCycling) {  // check if isCycling is true at the end of the animation
+          this.switchPositions();  // re-call switchPositions to create the loop effect
         }
       };
       animate();
     },
-      executeAndCloseCommand() {
+    executeAndCloseCommand() {
       this.executeCommand();
       this.closeCommandPrompt();
     },
@@ -153,8 +156,18 @@ export default {
       this.commandPromptVisible = false;
     },
     executeCommand() {
-      console.log(`Executing command: ${this.commandInput}`);
-      // TODO: Implement your command execution logic here
+      switch (this.commandInput) {
+        case 'cycle':
+          this.isCycling = true;  // set isCycling to true when 'cycle' command is executed
+          this.switchPositions();
+          break;
+        case 'stop':  // add a 'stop' command to stop the animation loop
+          this.isCycling = false;
+          break;
+        default:
+          console.log(`Unknown command: ${this.commandInput}`);
+          break;
+      }
       this.commandInput = '';  // Clear the command input field
     },
     createKeyupHandler() {

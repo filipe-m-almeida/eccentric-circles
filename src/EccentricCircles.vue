@@ -10,6 +10,21 @@
   <div v-if="debugVisible" class="debug-overlay">
     <pre>{{ debugData }}</pre>
   </div>
+  <div v-if="keyHelpVisible" class="key-help-overlay">
+    <p><strong>Key Shortcuts:</strong></p>
+    <ul>
+      <li>d: Increase gap</li>
+      <li>a: Decrease gap</li>
+      <li>w: Increase stroke width</li>
+      <li>s: Decrease stroke width</li>
+      <li>Arrow keys: Move groups</li>
+      <li>2: Increase saturation</li>
+      <li>1: Decrease saturation</li>
+      <li>Escape: End dragging</li>
+      <li>/: Toggle debug visibility</li>
+      <li>Space: Switch positions</li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -28,6 +43,7 @@ export default {
       isDragging: false,
       lastPosX: 0,
       lastPosY: 0,
+      keyHelpVisible: false,
       debugVisible: false,
       stageConfig: {
         width: window.innerWidth,
@@ -136,6 +152,7 @@ export default {
             'Escape': () => this.endDrag(),
             '/': () => this.debugVisible = !this.debugVisible,
             ' ': () => this.switchPositions(), // Spacebar
+            '?': () => this.keyHelpVisible = !this.keyHelpVisible,
           };
 
         const action = map[e.key];
@@ -174,4 +191,26 @@ body {
   color: #00ff00;
   pointer-events: none;
 }
+
+.key-help-overlay {
+  position: fixed;
+  top: 50%;  /* position it vertically in the center */
+  left: 50%; /* position it horizontally in the center */
+  transform: translate(-50%, -50%); /* This will truly center the overlay */
+  z-index: 9999;
+  background-color: rgba(0, 30, 0, 0.9); /* Here 0.8 is the opacity, reduce this value if you want the background to be more transparent */
+  padding: 20px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 20px;
+  color: #00ff00;
+  pointer-events: none;
+  width: 500px;
+  height: auto;
+  overflow: auto;
+  text-align: left; /* Center the text */
+}
+
+
+
 </style>

@@ -39,10 +39,15 @@ export default {
       };
     },
     gapTextConfig() {
+      const DPI = 97.7; // replace 97.7 with the actual DPI if it's different
+      const DISTANCE_MM = 500; // screen distance in mm, 50cm = 500mm
+      const MM_PER_PIXEL = 25.4 / DPI; 
+      let prismDiopters = 100 * (this.gap * MM_PER_PIXEL / DISTANCE_MM);
+      
       return {
         x: this.groupConfig.x - 10,
         y: this.groupConfig.y + 80,
-        text: this.gap.toString(),
+        text: prismDiopters.toFixed(2) + " Δ", // show prism diopters with 2 decimal places
         fontSize: 20,
         fill: this.groupConfig.color,
         align: 'center',

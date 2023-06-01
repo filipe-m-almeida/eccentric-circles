@@ -61,9 +61,9 @@ export default {
   },
   methods: {
     adjustGap(increment) {
-        this.gap += (increment * 10);
-        this.leftGroupConfig.x -= increment * 10;
-        this.rightGroupConfig.x += increment * 10;
+        this.gap += (increment * 5);
+        this.leftGroupConfig.x -= increment * 5;
+        this.rightGroupConfig.x += increment * 5;
     },
     adjustStrokeWidth(delta) {
         this.leftGroupConfig.strokeWidth = Math.max(1, this.leftGroupConfig.strokeWidth + delta);
@@ -101,7 +101,7 @@ export default {
     },
     switchPositions() {
       // Add animation by updating the positions gradually over time
-      const animationDuration = 750; // Adjust as needed
+      const animationDuration = 2000; // Adjust as needed
       const startTime = Date.now();
       const startX1 = this.leftGroupConfig.x;
       const startX2 = this.rightGroupConfig.x;

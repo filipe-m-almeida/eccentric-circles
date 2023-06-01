@@ -25,6 +25,9 @@
       <li>Space: Switch positions</li>
     </ul>
   </div>
+  <div v-if="commandPromptVisible" class="command-prompt">
+    <input type="text" v-model="commandInput" ref="commandInput" @keyup.enter="executeAndCloseCommand" @keyup.esc="closeCommandPrompt" @keydown.stop="" />
+  </div>
 </template>
 
 <script>
@@ -45,6 +48,8 @@ export default {
       lastPosY: 0,
       keyHelpVisible: false,
       debugVisible: false,
+      commandPromptVisible: false,
+      commandInput: '',
       stageConfig: {
         width: window.innerWidth,
         height: window.innerHeight
@@ -139,6 +144,39 @@ export default {
       };
       animate();
     },
+      executeAndCloseCommand() {
+      this.executeCommand();
+      this.closeCommandPrompt();
+    },
+    closeCommandPrompt() {
+      this.commandInput = '';
+      this.commandPromptVisible = false;
+    },
+    executeCommand() {
+      console.log(`Executing command: ${this.commandInput}`);
+      // TODO: Implement your command execution logic here
+      this.commandInput = '';  // Clear the command input field
+    },
+    createKeyupHandler() {
+      return (e) => {
+        const map = {
+          '/': () => {
+            this.commandPromptVisible = !this.commandPromptVisible;
+            if (this.commandPromptVisible) {
+              this.$nextTick(() => {
+                this.$refs.commandInput.focus();
+              });
+            }
+          },
+        };
+
+        const action = map[e.key];
+        if (action) {
+          action();
+          e.preventDefault();
+        }
+      }
+    },
     createKeydownHandler() {
         return (e) => {
           const map = {
@@ -153,7 +191,7 @@ export default {
             '2': () => this.adjustSaturation(10),
             '1': () => this.adjustSaturation(-10),
             'Escape': () => this.endDrag(),
-            '/': () => this.debugVisible = !this.debugVisible,
+            'm': () => this.debugVisible = !this.debugVisible,
             ' ': () => this.switchPositions(), // Spacebar
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
           };
@@ -168,9 +206,13 @@ export default {
   created() {
     this.keydownHandler = this.createKeydownHandler();
     window.addEventListener('keydown', this.keydownHandler);
+
+    this.keyupHandler = this.createKeyupHandler();
+    window.addEventListener('keyup', this.keyupHandler);
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.keydownHandler);
+    window.removeEventListener('keyup', this.keyupHandler);
   }
 }
 </script>
@@ -214,6 +256,28 @@ body {
   text-align: left; /* Center the text */
 }
 
+.command-prompt {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 16px;
+  color: #00ff00;
+}
 
+.command-prompt input {
+  width: 95%;
+  font-family: monospace;
+  font-size: 16px;
+  color: #00ff00;
+  background-color: #000;
+  border: none;
+  outline: none;
+}
 
 </style>

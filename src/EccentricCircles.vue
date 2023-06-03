@@ -91,18 +91,14 @@ export default {
   methods: {
     adjustGap(increment) {
         this.gap += (increment * 2) * 2;
-        this.leftGroupConfig.x -= increment * 2;
-        this.rightGroupConfig.x += increment * 2;
     },
     adjustStrokeWidth(delta) {
         this.leftGroupConfig.strokeWidth = Math.max(1, this.leftGroupConfig.strokeWidth + delta);
         this.rightGroupConfig.strokeWidth = Math.max(1, this.rightGroupConfig.strokeWidth + delta);
     },
     moveGroups(xDelta, yDelta) {
-      this.leftGroupConfig.x += xDelta;
-      this.rightGroupConfig.x += xDelta;
-      this.leftGroupConfig.y += yDelta;
-      this.rightGroupConfig.y += yDelta;
+      this.x += xDelta;
+      this.y += yDelta;
     },
     toggleDrag(e) {
       this.isDragging = !this.isDragging;
@@ -137,17 +133,14 @@ export default {
 
       const animate = () => {
         // Update the position of the groups
-        this.leftGroupConfig.x += speedX;
-        this.rightGroupConfig.x += speedX;
-        this.leftGroupConfig.y += speedY;
-        this.rightGroupConfig.y += speedY;
+        this.x += speedX;
+        this.y += speedY;
 
-        if (this.leftGroupConfig.x - radius < 0 || this.leftGroupConfig.x + radius > stageWidth ||
-            this.rightGroupConfig.x - radius < 0 || this.rightGroupConfig.x + radius > stageWidth) {
+        if (this.x - radius < 0 || this.x + radius > stageWidth) {
           speedX = -speedX;
         }
-        if (this.leftGroupConfig.y - radius < 0 || this.leftGroupConfig.y + radius > stageHeight ||
-            this.rightGroupConfig.y - radius < 0 || this.rightGroupConfig.y + radius > stageHeight) {
+  
+        if (this.y - radius < 0 || this.y + radius > stageWidth) {
           speedY = -speedY;
         }
 

@@ -83,9 +83,9 @@ export default {
   },
   methods: {
     adjustGap(increment) {
-        this.gap += (increment * 3) * 2;
-        this.leftGroupConfig.x -= increment * 3;
-        this.rightGroupConfig.x += increment * 3;
+        this.gap += (increment * 2) * 2;
+        this.leftGroupConfig.x -= increment * 2;
+        this.rightGroupConfig.x += increment * 2;
     },
     adjustStrokeWidth(delta) {
         this.leftGroupConfig.strokeWidth = Math.max(1, this.leftGroupConfig.strokeWidth + delta);

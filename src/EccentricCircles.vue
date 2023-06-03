@@ -126,6 +126,7 @@ export default {
       const stageHeight = this.stageConfig.height;
       let speedX = 1;
       let speedY = 1;
+      const radius = 70;
 
       const animate = () => {
         // Update the position of the groups
@@ -134,11 +135,12 @@ export default {
         this.leftGroupConfig.y += speedY;
         this.rightGroupConfig.y += speedY;
 
-        // Check if the groups have hit the edge of the stage and reverse direction if they have
-        if (this.leftGroupConfig.x < 0 || this.leftGroupConfig.x > stageWidth || this.rightGroupConfig.x < 0 || this.rightGroupConfig.x > stageWidth) {
+        if (this.leftGroupConfig.x - radius < 0 || this.leftGroupConfig.x + radius > stageWidth ||
+            this.rightGroupConfig.x - radius < 0 || this.rightGroupConfig.x + radius > stageWidth) {
           speedX = -speedX;
         }
-        if (this.leftGroupConfig.y < 0 || this.leftGroupConfig.y > stageHeight || this.rightGroupConfig.y < 0 || this.rightGroupConfig.y > stageHeight) {
+        if (this.leftGroupConfig.y - radius < 0 || this.leftGroupConfig.y + radius > stageHeight ||
+            this.rightGroupConfig.y - radius < 0 || this.rightGroupConfig.y + radius > stageHeight) {
           speedY = -speedY;
         }
 

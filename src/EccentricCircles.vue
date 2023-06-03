@@ -39,6 +39,8 @@ export default {
   },
   data() {
     return {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
       gap: 0,
       depth: 0.4,
       saturation: 0,
@@ -54,26 +56,31 @@ export default {
       stageConfig: {
         width: window.innerWidth,
         height: window.innerHeight
-      },
-      leftGroupConfig: {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
+      }
+    }
+  },
+  computed: {
+    // TODO: Move the x calculation to the inner component and move these back to non computed properties.
+    leftGroupConfig() {
+      return {
+        x: this.x - this.gap / 2,
+        y: this.y,
         translate: -10,
         color: 'rgb(0, 0, 255)',
         depth: 0.4,
         strokeWidth: 4
-      },
-      rightGroupConfig: {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
+      }
+    },
+    rightGroupConfig() {
+      return {
+        x: this.x + this.gap / 2,
+        y: this.y,
         translate: 10,
         color: 'rgb(255, 0, 0)',
         depth: 0.4,
         strokeWidth: 4
       }
-    }
-  },
-  computed: {
+    },
     debugData() {
       return JSON.stringify(this.$data, null, 2)
       .replace(/[{},"]/g, '')

@@ -1,7 +1,7 @@
 <template>
   <v-stage :config="stageConfig" ref="stage" @mousedown="toggleDrag" @mousemove="doDrag" @mouseleave="endDrag">
     <v-layer>
-      <transition name="circle-slide" v-for="(group, index) in [leftGroupConfig, rightGroupConfig]" :key="group.x">
+      <transition name="circle-slide" v-for="(group, index) in [leftGroupConfig, rightGroupConfig]" :key="index">
         <CircleGroup :groupConfig="group" :gap="gap" />
       </transition>
     </v-layer>
@@ -121,6 +121,34 @@ export default {
       this.isDragging = false;
       document.body.style.cursor = 'auto'; // Show cursor
     },
+    startBouncing() {
+      const stageWidth = this.stageConfig.width;
+      const stageHeight = this.stageConfig.height;
+      let speedX = 1;
+      let speedY = 1;
+
+      const animate = () => {
+        // Update the position of the groups
+        this.leftGroupConfig.x += speedX;
+        this.rightGroupConfig.x += speedX;
+        this.leftGroupConfig.y += speedY;
+        this.rightGroupConfig.y += speedY;
+
+        // Check if the groups have hit the edge of the stage and reverse direction if they have
+        if (this.leftGroupConfig.x < 0 || this.leftGroupConfig.x > stageWidth || this.rightGroupConfig.x < 0 || this.rightGroupConfig.x > stageWidth) {
+          speedX = -speedX;
+        }
+        if (this.leftGroupConfig.y < 0 || this.leftGroupConfig.y > stageHeight || this.rightGroupConfig.y < 0 || this.rightGroupConfig.y > stageHeight) {
+          speedY = -speedY;
+        }
+
+        // Continue the animation
+        requestAnimationFrame(animate);
+      };
+
+      // Start the animation
+      animate();
+    },
     switchPositions(animationDuration = 2000) {
       // Add animation by updating the positions gradually over time
       const startTime = Date.now();
@@ -167,6 +195,9 @@ export default {
           break;
         case 'stop':
           this.isCycling = false;
+          break;
+        case 'bounce':
+          this.startBouncing();
           break;
         default:
           console.log(`Unknown command: ${this.commandInput}`);

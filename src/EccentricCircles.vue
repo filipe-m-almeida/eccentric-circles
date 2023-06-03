@@ -140,7 +140,7 @@ export default {
           speedX = -speedX;
         }
   
-        if (this.y - radius < 0 || this.y + radius > stageWidth) {
+        if (this.y - radius < 0 || this.y + radius > stageHeight) {
           speedY = -speedY;
         }
 

@@ -158,7 +158,8 @@ export default {
       const animate = () => {
         this.gap += delta;
         // TODO: Test if the gap is within the target range
-        if (this.gap == targetGap) {
+        if ((targetGap < 0 && targetGap >= this.gap) || (targetGap > 0 && targetGap <= this.gap)) {
+          this.gap = targetGap;
           if (this.isCycling) {
             this.switchPositions();
           };

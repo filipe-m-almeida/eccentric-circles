@@ -151,27 +151,20 @@ export default {
       // Start the animation
       animate();
     },
-    switchPositions(animationDuration = 2000) {
-      // Add animation by updating the positions gradually over time
-      const startTime = Date.now();
-      const startX1 = this.leftGroupConfig.x;
-      const startX2 = this.rightGroupConfig.x;
-      const endX1 = startX2;
-      const endX2 = startX1;
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / animationDuration, 1);
-        const newX1 = startX1 + (endX1 - startX1) * progress;
-        const newX2 = startX2 + (endX2 - startX2) * progress;
-        this.leftGroupConfig.x = newX1;
-        this.rightGroupConfig.x = newX2;
+    switchPositions(speed = 0.5) {
+      const targetGap = -this.gap;
+      const delta = Math.sign(targetGap) * speed;
 
-        this.gap = this.rightGroupConfig.x - this.leftGroupConfig.x;
-        
-        if (progress < 1) {
+      const animate = () => {
+        this.gap += delta;
+        // TODO: Test if the gap is within the target range
+        if (this.gap == targetGap) {
+          if (this.isCycling) {
+            this.switchPositions();
+          };
+          return;
+        } else {
           requestAnimationFrame(animate);
-        } else if (this.isCycling) {  // check if isCycling is true at the end of the animation
-          this.switchPositions(animationDuration);  // re-call switchPositions to create the loop effect
         }
       };
       animate();
@@ -192,7 +185,7 @@ export default {
       switch (command) {
         case 'cycle':
           this.isCycling = true;
-          const duration = params[0] ? parseInt(params[0], 10) : 2000;
+          const duration = params[0] ? parseFloat(params[0], 10) : 0.5;
           this.switchPositions(duration);
           break;
         case 'stop':

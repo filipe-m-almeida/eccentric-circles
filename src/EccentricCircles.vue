@@ -151,7 +151,7 @@ export default {
       // Start the animation
       animate();
     },
-    switchPositions(speed = 0.5) {
+    switchPositions(speed = 0.05) {
       const targetGap = -this.gap;
       const delta = Math.sign(targetGap) * speed;
 
@@ -161,7 +161,7 @@ export default {
         if ((targetGap < 0 && targetGap >= this.gap) || (targetGap > 0 && targetGap <= this.gap)) {
           this.gap = targetGap;
           if (this.isCycling) {
-            this.switchPositions();
+            this.switchPositions(speed);
           };
           return;
         } else {
@@ -186,7 +186,7 @@ export default {
       switch (command) {
         case 'cycle':
           this.isCycling = true;
-          const duration = params[0] ? parseFloat(params[0], 10) : 0.5;
+          const duration = params[0] ? parseFloat(params[0], 10) : 0.05;
           this.switchPositions(duration);
           break;
         case 'stop':

@@ -26,7 +26,16 @@
     </ul>
   </div>
   <div v-if="commandPromptVisible" class="command-prompt">
-    <input type="text" v-model="commandInput" ref="commandInput" @keyup.enter="executeAndCloseCommand" @keyup.esc="closeCommandPrompt" @keydown.stop="" />
+    <input 
+      type="text" 
+      v-model="commandInput" 
+      ref="commandInput" 
+      @keyup.enter="executeAndCloseCommand" 
+      @keyup.esc="closeCommandPrompt" 
+      @keyup.up.prevent="nextCommand" 
+      @keyup.down.prevent="previousCommand" 
+      @keydown.stop=""
+    />
   </div>
 </template>
 
@@ -53,6 +62,8 @@ export default {
       commandPromptVisible: false,
       commandInput: '',
       isCycling: false,
+      commandHistory: JSON.parse(localStorage.getItem('commandHistory')) || [],
+      currentCommandIndex: -1,  
       stageConfig: {
         width: window.innerWidth,
         height: window.innerHeight
@@ -170,6 +181,16 @@ export default {
       };
       animate();
     },
+    navigateCommandHistory(step) {
+      this.currentCommandIndex = Math.max(0, Math.min(this.commandHistory.length - 1, this.currentCommandIndex + step));
+      this.commandInput = this.commandHistory[this.currentCommandIndex] || '';
+    },
+    previousCommand(e) {
+      this.navigateCommandHistory(-1);
+    },
+    nextCommand(e) {
+      this.navigateCommandHistory(1);
+    },
     executeAndCloseCommand() {
       this.executeCommand();
       this.closeCommandPrompt();
@@ -177,11 +198,19 @@ export default {
     closeCommandPrompt() {
       this.commandInput = '';
       this.commandPromptVisible = false;
+      this.currentCommandIndex = -1;  // Reset command history index
     },
     executeCommand() {
       const parts = this.commandInput.split(' ');
       const command = parts[0];
       const params = parts.slice(1);
+
+      this.commandHistory.push(this.commandInput);
+      localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
+      console.log(this.commandHistory);
+
+
+      console.log(`Executing command: ${command} with params: ${params.join(', ')}`);
 
       switch (command) {
         case 'cycle':
@@ -202,26 +231,6 @@ export default {
 
       this.commandInput = '';
     },
-    createKeyupHandler() {
-      return (e) => {
-        const map = {
-          '/': () => {
-            this.commandPromptVisible = !this.commandPromptVisible;
-            if (this.commandPromptVisible) {
-              this.$nextTick(() => {
-                this.$refs.commandInput.focus();
-              });
-            }
-          },
-        };
-
-        const action = map[e.key];
-        if (action) {
-          action();
-          e.preventDefault();
-        }
-      }
-    },
     createKeydownHandler() {
         return (e) => {
           const map = {
@@ -239,6 +248,15 @@ export default {
             'm': () => this.debugVisible = !this.debugVisible,
             ' ': () => this.switchPositions(), // Spacebar
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
+            '/': () => {
+              this.commandPromptVisible = true;
+              if (this.commandPromptVisible) {
+                this.$nextTick(() => {
+                  this.$refs.commandInput.focus();
+                });
+                e.preventDefault();
+              }
+            },
           };
 
         const action = map[e.key];
@@ -252,8 +270,8 @@ export default {
     this.keydownHandler = this.createKeydownHandler();
     window.addEventListener('keydown', this.keydownHandler);
 
-    this.keyupHandler = this.createKeyupHandler();
-    window.addEventListener('keyup', this.keyupHandler);
+    // this.keyupHandler = this.createKeyupHandler();
+    // window.addEventListener('keyup', this.keyupHandler);
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.keydownHandler);

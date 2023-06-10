@@ -20,7 +20,7 @@ export default {
       commandPromptVisible: false,
       commandInput: '',
       commandHistory: JSON.parse(localStorage.getItem('commandHistory')) || [],
-      currentCommandIndex: 0,  
+      currentCommandIndex: -1,  
     }
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
     closeCommandPrompt() {
       this.commandInput = '';
       this.commandPromptVisible = false;
-      this.currentCommandIndex = 0;  // Reset command history index
+      this.currentCommandIndex = -1;  // Reset command history index
     },
     executeCommand() {
       const commands = this.commandInput.split(';');

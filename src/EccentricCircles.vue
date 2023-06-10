@@ -212,11 +212,14 @@ export default {
             ' ': () => this.switchPositions(), // Spacebar
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
             '/': () => {
+              // TODO: Turn this into a property.
               this.$refs.commandPrompt.commandPromptVisible = true;
-              if (this.$refs.commandPrompt.$refs.commandInput) {
-                this.$refs.commandPrompt.$refs.commandInput.focus();
-                e.preventDefault();
-              }
+              this.$nextTick(() => {
+                if (this.$refs.commandPrompt.$refs.commandInput) {
+                  this.$refs.commandPrompt.$refs.commandInput.focus();
+                }
+              });
+              e.preventDefault();
             },
           };
 
@@ -280,28 +283,5 @@ body {
   text-align: left; /* Center the text */
 }
 
-.command-prompt {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  font-family: monospace;
-  font-size: 16px;
-  color: #00ff00;
-}
-
-.command-prompt input {
-  width: 95%;
-  font-family: monospace;
-  font-size: 16px;
-  color: #00ff00;
-  background-color: #000;
-  border: none;
-  outline: none;
-}
 
 </style>

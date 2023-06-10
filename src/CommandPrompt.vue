@@ -44,15 +44,19 @@ export default {
       this.currentCommandIndex = -1;  // Reset command history index
     },
     executeCommand() {
-      const parts = this.commandInput.split(' ');
-      const command = parts[0];
-      const params = parts.slice(1);
+      const commands = this.commandInput.split(';');
+      commands.forEach((commandString) => {
+        const parts = commandString.trim().split(' ');
+        const command = parts[0];
+        const params = parts.slice(1);
 
-      this.commandHistory.push(this.commandInput);
-      localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
-      console.log(this.commandHistory);
+        // For each command, push it into the commandHistory and save to localStorage
+        this.commandHistory.push(commandString);
+        localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
 
-      this.$emit('execute-command', { command, params });
+        // emit execute-command for each command
+        this.$emit('execute-command', { command, params });
+      });
 
       this.commandInput = '';
     },

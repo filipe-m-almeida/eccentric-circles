@@ -225,8 +225,8 @@ export default {
               this.$refs.commandPrompt.commandPromptVisible = true;
               if (this.$refs.commandPrompt.$refs.commandInput) {
                 this.$refs.commandPrompt.$refs.commandInput.focus();
+                e.preventDefault();
               }
-              e.preventDefault();
             },
           };
 

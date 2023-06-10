@@ -25,26 +25,20 @@
       <li>Space: Switch positions</li>
     </ul>
   </div>
-  <div v-if="commandPromptVisible" class="command-prompt">
-    <input 
-      type="text" 
-      v-model="commandInput" 
-      ref="commandInput" 
-      @keyup.enter="executeAndCloseCommand" 
-      @keyup.esc="closeCommandPrompt" 
-      @keyup.up.prevent="nextCommand" 
-      @keyup.down.prevent="previousCommand" 
-      @keydown.stop=""
-    />
-  </div>
+  <CommandPrompt 
+    @execute-command="executeCommand" 
+    ref="commandPrompt" 
+  />
 </template>
 
 <script>
 import CircleGroup from "./CircleGroup.vue";
+import CommandPrompt from "./CommandPrompt.vue";
 
 export default {
   components: {
-    CircleGroup
+    CircleGroup,
+    CommandPrompt
   },
   data() {
     return {
@@ -62,8 +56,6 @@ export default {
       commandPromptVisible: false,
       commandInput: '',
       isCycling: false,
-      commandHistory: JSON.parse(localStorage.getItem('commandHistory')) || [],
-      currentCommandIndex: -1,  
       stageConfig: {
         width: window.innerWidth,
         height: window.innerHeight
@@ -181,25 +173,6 @@ export default {
       };
       animate();
     },
-    navigateCommandHistory(step) {
-      this.currentCommandIndex = Math.max(0, Math.min(this.commandHistory.length - 1, this.currentCommandIndex + step));
-      this.commandInput = this.commandHistory[this.currentCommandIndex] || '';
-    },
-    previousCommand(e) {
-      this.navigateCommandHistory(-1);
-    },
-    nextCommand(e) {
-      this.navigateCommandHistory(1);
-    },
-    executeAndCloseCommand() {
-      this.executeCommand();
-      this.closeCommandPrompt();
-    },
-    closeCommandPrompt() {
-      this.commandInput = '';
-      this.commandPromptVisible = false;
-      this.currentCommandIndex = -1;  // Reset command history index
-    },
     executeCommand() {
       const parts = this.commandInput.split(' ');
       const command = parts[0];
@@ -249,13 +222,11 @@ export default {
             ' ': () => this.switchPositions(), // Spacebar
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
             '/': () => {
-              this.commandPromptVisible = true;
-              if (this.commandPromptVisible) {
-                this.$nextTick(() => {
-                  this.$refs.commandInput.focus();
-                });
-                e.preventDefault();
+              this.$refs.commandPrompt.commandPromptVisible = true;
+              if (this.$refs.commandPrompt.$refs.commandInput) {
+                this.$refs.commandPrompt.$refs.commandInput.focus();
               }
+              e.preventDefault();
             },
           };
 

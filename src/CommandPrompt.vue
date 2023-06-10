@@ -50,11 +50,13 @@ export default {
         const command = parts[0];
         const params = parts.slice(1);
 
-        // For each command, push it into the commandHistory and save to localStorage
-        this.commandHistory.push(commandString);
-        localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
+        // If the last command is not the same as the current command, push it into the commandHistory
+        if (this.commandHistory[this.commandHistory.length - 1] !== commandString) {
+          this.commandHistory.push(commandString);
+          localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
+        }
 
-        // emit execute-command for each command
+        // Emit execute-command for each command
         this.$emit('execute-command', { command, params });
       });
 

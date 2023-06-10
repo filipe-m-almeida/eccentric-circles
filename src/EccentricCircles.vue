@@ -26,7 +26,7 @@
     </ul>
   </div>
   <CommandPrompt 
-    @execute-command="executeCommand" 
+    @execute-command="executeCommand($event.command, $event.params)" 
     ref="commandPrompt" 
   />
 </template>
@@ -173,17 +173,7 @@ export default {
       };
       animate();
     },
-    executeCommand() {
-      const parts = this.commandInput.split(' ');
-      const command = parts[0];
-      const params = parts.slice(1);
-
-      this.commandHistory.push(this.commandInput);
-      localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
-      console.log(this.commandHistory);
-
-
-      console.log(`Executing command: ${command} with params: ${params.join(', ')}`);
+    executeCommand(command, params) {
 
       switch (command) {
         case 'cycle':

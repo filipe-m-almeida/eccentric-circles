@@ -20,7 +20,7 @@ export default {
       commandPromptVisible: false,
       commandInput: '',
       commandHistory: JSON.parse(localStorage.getItem('commandHistory')) || [],
-      currentCommandIndex: -1,  
+      currentCommandIndex: 0,  
     }
   },
   methods: {
@@ -29,10 +29,10 @@ export default {
       this.commandInput = this.commandHistory[this.currentCommandIndex] || '';
     },
     previousCommand(e) {
-      this.navigateCommandHistory(-1);
+      this.navigateCommandHistory(1);
     },
     nextCommand(e) {
-      this.navigateCommandHistory(1);
+      this.navigateCommandHistory(-1);
     },
     executeAndCloseCommand() {
       this.executeCommand();
@@ -41,7 +41,7 @@ export default {
     closeCommandPrompt() {
       this.commandInput = '';
       this.commandPromptVisible = false;
-      this.currentCommandIndex = -1;  // Reset command history index
+      this.currentCommandIndex = 0;  // Reset command history index
     },
     executeCommand() {
       const commands = this.commandInput.split(';');
@@ -51,8 +51,8 @@ export default {
         const params = parts.slice(1);
 
         // If the last command is not the same as the current command, push it into the commandHistory
-        if (this.commandHistory[this.commandHistory.length - 1] !== commandString) {
-          this.commandHistory.push(commandString);
+        if (this.commandHistory[0] !== this.commandInput) {
+          this.commandHistory.unshift(this.commandInput);
           localStorage.setItem('commandHistory', JSON.stringify(this.commandHistory));
         }
 

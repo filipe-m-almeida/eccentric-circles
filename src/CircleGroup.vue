@@ -11,6 +11,7 @@
 
 <script>
 import Circle from "./Circle.vue";
+import { Utils } from "./Utils.ts";
 
 export default {
   components: {
@@ -42,7 +43,10 @@ export default {
       const DPI = 97.7; // replace 97.7 with the actual DPI if it's different
       const DISTANCE_MM = 500; // screen distance in mm, 50cm = 500mm
       const MM_PER_PIXEL = 25.4 / DPI; 
-      let prismDiopters = 100 * (this.gap * MM_PER_PIXEL / DISTANCE_MM);
+      // let prismDiopters = 100 * (this.gap * MM_PER_PIXEL / DISTANCE_MM);
+      let prismDiopters = Utils.pixelsToPrism(this.gap);
+
+      // Infinity viewing prismDiopters for 61mm PD would be -12.2 prism diopeters.
       
       return {
         x: this.groupConfig.x - 10,

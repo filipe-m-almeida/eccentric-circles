@@ -34,6 +34,7 @@
 <script>
 import CircleGroup from "./CircleGroup.vue";
 import CommandPrompt from "./CommandPrompt.vue";
+import { Utils } from "./Utils.ts";
 
 export default {
   components: {
@@ -154,17 +155,19 @@ export default {
       // Start the animation
       animate();
     },
-    switchPositions(speed = 0.05) {
-      const targetGap = -this.gap;
-      const delta = Math.sign(targetGap) * speed;
+    switchPositions(left, right, speed = 1) {
+      const SPEED_FACTOR = 0.005
+      const delta = (right - left) * speed * SPEED_FACTOR;
 
       const animate = () => {
         this.gap += delta;
-        // TODO: Test if the gap is within the target range
-        if ((targetGap < 0 && targetGap >= this.gap) || (targetGap > 0 && targetGap <= this.gap)) {
-          this.gap = targetGap;
+        // Test if the gap is within the target range
+        if ((delta < 0 && this.gap <= right) || (delta > 0 && this.gap >= right)) {
+          this.gap = right;
           if (this.isCycling) {
-            this.switchPositions(speed);
+            // swap left and right for next cycle
+            [left, right] = [right, left];
+            this.switchPositions(left, right, speed);
           };
           return;
         } else {
@@ -178,8 +181,11 @@ export default {
       switch (command) {
         case 'cycle':
           this.isCycling = true;
-          const duration = params[0] ? parseFloat(params[0], 10) : 0.05;
-          this.switchPositions(duration);
+          let left = params[0] && Utils.prismToPixels(parseFloat(params[0])) || -this.gap;
+          let right = params[1] && Utils.prismToPixels(parseFloat(params[1])) || this.gap;
+          let speed = params[2] && parseFloat(params[2]) || 1;
+          console.log(`Cycling from ${left} to ${right}`);
+          this.switchPositions(left, right, speed);
           break;
         case 'stop':
           this.isCycling = false;
@@ -209,7 +215,7 @@ export default {
             '1': () => this.adjustSaturation(-10),
             'Escape': () => this.endDrag(),
             'm': () => this.debugVisible = !this.debugVisible,
-            ' ': () => this.switchPositions(), // Spacebar
+            ' ': () => this.switchPositions(-this.gap, this.gap), // Spacebar
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
             '/': () => {
               // TODO: Turn this into a property.

@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
@@ -24,7 +24,7 @@ export default {
     }
   },
   methods: {
-    navigateCommandHistory(step) {
+    navigateCommandHistory(step : number) {
       this.currentCommandIndex = Math.max(0, Math.min(this.commandHistory.length - 1, this.currentCommandIndex + step));
       this.commandInput = this.commandHistory[this.currentCommandIndex] || '';
     },

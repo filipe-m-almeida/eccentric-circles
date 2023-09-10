@@ -9,7 +9,7 @@
   </v-group>
 </template>
 
-<script>
+<script lang="ts">
 import Circle from "./Circle.vue";
 import { Utils } from "./Utils.ts";
 

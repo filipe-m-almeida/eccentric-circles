@@ -2,7 +2,7 @@
   <v-circle v-bind="config" globalCompositeOperation="lighter" />
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: {
     config: Object

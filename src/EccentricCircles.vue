@@ -31,7 +31,7 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import CircleGroup from "./CircleGroup.vue";
 import CommandPrompt from "./CommandPrompt.vue";
 import { Utils } from "./Utils.ts";
@@ -93,14 +93,14 @@ export default {
     }
   },
   methods: {
-    adjustGap(increment) {
+    adjustGap(increment : number) {
         this.gap += (increment * 2) * 2;
     },
-    adjustStrokeWidth(delta) {
+    adjustStrokeWidth(delta : number) {
         this.leftGroupConfig.strokeWidth = Math.max(1, this.leftGroupConfig.strokeWidth + delta);
         this.rightGroupConfig.strokeWidth = Math.max(1, this.rightGroupConfig.strokeWidth + delta);
     },
-    moveGroups(xDelta, yDelta) {
+    moveGroups(xDelta : number, yDelta : number) {
       this.x += xDelta;
       this.y += yDelta;
     },
@@ -155,7 +155,7 @@ export default {
       // Start the animation
       animate();
     },
-    switchPositions(left, right, speed = 1) {
+    switchPositions(left : number, right : number, speed : number = 1) {
       const SPEED_FACTOR = 0.005
       const delta = (right - left) * speed * SPEED_FACTOR;
 
@@ -176,7 +176,7 @@ export default {
       };
       animate();
     },
-    executeCommand(command, params) {
+    executeCommand(command : string, params : string[]) {
 
       switch (command) {
         case 'cycle':

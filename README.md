@@ -2,6 +2,11 @@
 
 This repository contains a Vue.js application for an eccentric circles vision therapy exercise. The program is a prototype designed to showcase the potential benefits of vision therapy exercises. However, it is important to note that this program should not be used without the guidance and supervision of a qualified medical professional or vision therapist.
 
+
+## Demo site
+
+[Eccentric Circles](https://vt.filipealmeida.net/)
+
 ## Purpose
 
 The Eccentric Circles program aims to improve visual tracking, coordination, and focus through interactive manipulation of eccentric circles on a canvas. By engaging with the eccentric circles exercise, users can potentially enhance their visual tracking abilities and eye-hand coordination skills.

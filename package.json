@@ -9,12 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "konva": "^9.2.0",
-    "vue": "^3.3.4",
+    "konva": "^9.2.3",
+    "vue": "^3.3.9",
     "vue-konva": "^3.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.3.4",
-    "vite": "^4.4.9"
+    "@vitejs/plugin-vue": "^4.5.1",
+    "vite": "^5.0.4"
   }
 }

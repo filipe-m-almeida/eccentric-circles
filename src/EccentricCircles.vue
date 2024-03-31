@@ -20,6 +20,7 @@
       <li>Arrow keys: Move groups</li>
       <li>2: Increase saturation</li>
       <li>1: Decrease saturation</li>
+      <li>r: Reset gap</li>
       <li>Escape: End dragging</li>
       <li>/: Toggle debug visibility</li>
       <li>Space: Switch positions</li>
@@ -216,6 +217,7 @@ export default {
             'Escape': () => this.endDrag(),
             'm': () => this.debugVisible = !this.debugVisible,
             ' ': () => this.switchPositions(-this.gap, this.gap), // Spacebar
+            'r': () => this.gap = 0,
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
             '/': () => {
               // TODO: Turn this into a property.

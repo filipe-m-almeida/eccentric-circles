@@ -172,7 +172,9 @@ export default {
           };
           return;
         } else {
-          requestAnimationFrame(animate);
+          if (this.isCycling) {
+            requestAnimationFrame(animate);
+          }
         }
       };
       animate();
@@ -217,7 +219,7 @@ export default {
             'Escape': () => this.endDrag(),
             'm': () => this.debugVisible = !this.debugVisible,
             ' ': () => this.switchPositions(-this.gap, this.gap), // Spacebar
-            'r': () => this.gap = 0,
+            'r': () => (this.gap = 0, this.isCycling = false),
             '?': () => this.keyHelpVisible = !this.keyHelpVisible,
             '/': () => {
               // TODO: Turn this into a property.

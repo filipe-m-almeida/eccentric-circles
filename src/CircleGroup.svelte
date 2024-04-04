@@ -6,8 +6,22 @@
   export let groupConfig;
   export let gap;
 
-  $: bigCircleConfig = createCircleConfig('big');
-  $: smallCircleConfig = createCircleConfig('small');
+  $: bigCircleConfig = {
+    x: groupConfig.x,
+    y: groupConfig.y,
+    radius: 60,
+    stroke: groupConfig.color,
+    strokeWidth: groupConfig.strokeWidth || 4
+  };
+
+  $: smallCircleConfig = {
+    x: groupConfig.x + groupConfig.translate * groupConfig.depth,
+    y: groupConfig.y,
+    radius: 40,
+    stroke: groupConfig.color,
+    strokeWidth: groupConfig.strokeWidth || 4
+  };
+
   $: textConfig = {
     x: groupConfig.x - 15,
     y: groupConfig.y - 5,
@@ -17,6 +31,7 @@
     align: 'center',
     listening: false,
   };
+
   $: gapTextConfig = {
     x: groupConfig.x - 10,
     y: groupConfig.y + 80,
@@ -26,20 +41,15 @@
     align: 'center',
     listening: false,
   };
-
-  function createCircleConfig(type) {
-    return {
-      x: groupConfig.x + (type === 'small' ? groupConfig.translate * groupConfig.depth : 0),
-      y: groupConfig.y,
-      radius: type === 'big' ? 60 : 40,
-      stroke: groupConfig.color,
-      strokeWidth: groupConfig.strokeWidth || 4,
-      listening: false,
-    };
-  }
 </script>
 
-<Stage config={{ width: window.innerWidth, height: window.innerHeight }}>
+<Stage
+  config={{
+    width: window.innerWidth,
+    height: window.innerHeight,
+    background: 'black',
+  }}
+>
   <Layer>
     <Circle config={bigCircleConfig} />
     <Circle config={smallCircleConfig} />

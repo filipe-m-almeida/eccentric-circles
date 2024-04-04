@@ -232,7 +232,7 @@
 </script>
 
 <style>
-  body {
+  :global(body) {
     background-color: black;
     overflow: hidden;
   }

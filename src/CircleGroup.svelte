@@ -1,4 +1,5 @@
 <script>
+  import { Layer, Stage, Text } from 'svelte-konva';
   import Circle from './Circle.svelte';
   import { Utils } from './Utils.js';
 
@@ -38,9 +39,11 @@
   }
 </script>
 
-<div class="group">
-  <Circle config={bigCircleConfig} />
-  <Circle config={smallCircleConfig} />
-  <div class="text" style={textConfig}>Clear</div>
-  <div class="gap-text" style={gapTextConfig}>{Utils.pixelsToPrism(gap).toFixed(2)} Δ</div>
-</div>
+<Stage width={window.innerWidth} height={window.innerHeight}>
+  <Layer>
+    <Circle config={bigCircleConfig} />
+    <Circle config={smallCircleConfig} />
+    <Text {...textConfig} />
+    <Text {...gapTextConfig} />
+  </Layer>
+</Stage>

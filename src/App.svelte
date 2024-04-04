@@ -1,4 +1,5 @@
 <script>
+  import { Stage, Layer } from 'svelte-konva';
   import { onMount, onDestroy } from 'svelte';
   import CircleGroup from './CircleGroup.svelte';
   import CommandPrompt from './CommandPrompt.svelte';
@@ -278,11 +279,21 @@
   style="width: {stageConfig.width}px; height: {stageConfig.height}px;"
 >
   <div class="layer">
+    <Stage
+  config={{
+    width: window.innerWidth,
+    height: window.innerHeight,
+    background: 'black',
+  }}>
+  <Layer>
+
     {#each [leftGroupConfig, rightGroupConfig] as group, index (index)}
       <div class="circle-group" transition:slide>
         <CircleGroup groupConfig={group} gap={gap} />
       </div>
     {/each}
+    </Layer>
+    </Stage>
   </div>
 </div>
 

@@ -1,5 +1,5 @@
 <script>
-  import { Layer, Stage, Text, Circle } from 'svelte-konva';
+  import { Group, Text, Circle } from 'svelte-konva';
   // import Circle from './Circle.svelte';
   import { Utils } from './Utils.js';
 
@@ -11,7 +11,8 @@
     y: groupConfig.y,
     radius: 60,
     stroke: groupConfig.color,
-    strokeWidth: groupConfig.strokeWidth || 4
+    strokeWidth: groupConfig.strokeWidth || 4,
+    globalCompositeOperation: "lighter"
   };
 
   $: smallCircleConfig = {
@@ -19,7 +20,8 @@
     y: groupConfig.y,
     radius: 40,
     stroke: groupConfig.color,
-    strokeWidth: groupConfig.strokeWidth || 4
+    strokeWidth: groupConfig.strokeWidth || 4,
+    globalCompositeOperation: "lighter"
   };
 
   $: textConfig = {
@@ -30,6 +32,7 @@
     fill: groupConfig.color,
     align: 'center',
     listening: false,
+    globalCompositeOperation: "lighter"
   };
 
   $: gapTextConfig = {
@@ -40,20 +43,14 @@
     fill: groupConfig.color,
     align: 'center',
     listening: false,
+    globalCompositeOperation: "lighter"
   };
 </script>
 
-<Stage
-  config={{
-    width: window.innerWidth,
-    height: window.innerHeight,
-    background: 'black',
-  }}
->
-  <Layer>
-    <Circle config={bigCircleConfig} />
-    <Circle config={smallCircleConfig} />
-    <Text config={textConfig} />
-    <Text config={gapTextConfig} />
-  </Layer>
-</Stage>
+
+<Group>
+  <Circle config={bigCircleConfig}/>
+  <Circle config={smallCircleConfig} />
+  <Text config={textConfig} />
+  <Text config={gapTextConfig} />
+</Group>

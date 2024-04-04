@@ -1,18 +1,21 @@
 <script>
   import { Group, Text, Circle } from 'svelte-konva';
-  // import Circle from './Circle.svelte';
   import { Utils } from './Utils.js';
 
   export let groupConfig;
   export let gap;
+
+  // TODO: Get a better name for this
+  $: upperGroupConfig = {
+    globalCompositeOperation: "lighter"
+  };
 
   $: bigCircleConfig = {
     x: groupConfig.x,
     y: groupConfig.y,
     radius: 60,
     stroke: groupConfig.color,
-    strokeWidth: groupConfig.strokeWidth || 4,
-    globalCompositeOperation: "lighter"
+    strokeWidth: groupConfig.strokeWidth || 4
   };
 
   $: smallCircleConfig = {
@@ -20,8 +23,7 @@
     y: groupConfig.y,
     radius: 40,
     stroke: groupConfig.color,
-    strokeWidth: groupConfig.strokeWidth || 4,
-    globalCompositeOperation: "lighter"
+    strokeWidth: groupConfig.strokeWidth || 4
   };
 
   $: textConfig = {
@@ -31,8 +33,7 @@
     fontSize: 14,
     fill: groupConfig.color,
     align: 'center',
-    listening: false,
-    globalCompositeOperation: "lighter"
+    listening: false
   };
 
   $: gapTextConfig = {
@@ -42,13 +43,12 @@
     fontSize: 20,
     fill: groupConfig.color,
     align: 'center',
-    listening: false,
-    globalCompositeOperation: "lighter"
+    listening: false
   };
 </script>
 
 
-<Group>
+<Group config={upperGroupConfig}>
   <Circle config={bigCircleConfig}/>
   <Circle config={smallCircleConfig} />
   <Text config={textConfig} />

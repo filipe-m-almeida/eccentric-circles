@@ -1,6 +1,6 @@
 <script>
-  import { Layer, Stage, Text } from 'svelte-konva';
-  import Circle from './Circle.svelte';
+  import { Layer, Stage, Text, Circle } from 'svelte-konva';
+  // import Circle from './Circle.svelte';
   import { Utils } from './Utils.js';
 
   export let groupConfig;
@@ -15,7 +15,7 @@
     fontSize: 14,
     fill: groupConfig.color,
     align: 'center',
-    globalCompositeOperation: 'lighter',
+    listening: false,
   };
   $: gapTextConfig = {
     x: groupConfig.x - 10,
@@ -24,7 +24,7 @@
     fontSize: 20,
     fill: groupConfig.color,
     align: 'center',
-    globalCompositeOperation: 'lighter',
+    listening: false,
   };
 
   function createCircleConfig(type) {
@@ -34,16 +34,16 @@
       radius: type === 'big' ? 60 : 40,
       stroke: groupConfig.color,
       strokeWidth: groupConfig.strokeWidth || 4,
-      globalCompositeOperation: 'lighter',
+      listening: false,
     };
   }
 </script>
 
-<Stage width={window.innerWidth} height={window.innerHeight}>
+<Stage config={{ width: window.innerWidth, height: window.innerHeight }}>
   <Layer>
     <Circle config={bigCircleConfig} />
     <Circle config={smallCircleConfig} />
-    <Text {...textConfig} />
-    <Text {...gapTextConfig} />
+    <Text config={textConfig} />
+    <Text config={gapTextConfig} />
   </Layer>
 </Stage>

@@ -1,7 +1,12 @@
 <script>
-  import { Circle } from 'svelte-konva';
-
   export let config;
 </script>
 
-<Circle {...config} />
+<Circle
+  x={config.x}
+  y={config.y}
+  radius={config.radius}
+  stroke={config.stroke}
+  strokeWidth={config.strokeWidth}
+  globalCompositeOperation={config.globalCompositeOperation}
+/>

@@ -1,7 +1,7 @@
-import VueKonva from 'vue-konva';
-import { createApp } from 'vue';
-import EccentricCircles from './EccentricCircles.vue';
+import App from './App.svelte';
 
-const app = createApp(EccentricCircles);
-app.use(VueKonva);
-app.mount('#app');
+const app = new App({
+  target: document.body,
+});
+
+export default app;

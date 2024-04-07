@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "konva": "^9.2.3",
-    "vue": "^3.3.9",
-    "vue-konva": "^3.0.2"
+    "svelte": "^4.2.12",
+    "svelte-konva": "^0.3.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.5.1",
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "vite": "^5.0.4"
   }
 }

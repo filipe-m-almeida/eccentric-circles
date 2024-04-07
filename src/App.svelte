@@ -322,8 +322,10 @@
   </div>
 {/if}
 
+{#if commandPromptVisible}
 <CommandPrompt
   on:executeCommand={(e) => executeCommand(e.detail.command, e.detail.params)}
   bind:commandPromptVisible
   bind:commandInput
 />
+{/if}

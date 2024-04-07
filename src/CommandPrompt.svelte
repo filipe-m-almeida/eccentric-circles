@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
 
   export let commandPromptVisible = false;
   export let commandInput = '';
@@ -8,6 +8,11 @@
   let currentCommandIndex = -1;
 
   const dispatch = createEventDispatcher();
+  let inputElement;
+
+  onMount(() => {
+      inputElement.focus();
+  });
 
   function navigateCommandHistory(step) {
     currentCommandIndex = Math.max(0, Math.min(commandHistory.length - 1, currentCommandIndex + step));
@@ -54,11 +59,11 @@
   }
 </script>
 
-{#if commandPromptVisible}
   <div class="command-prompt">
     <input
       type="text"
       bind:value={commandInput}
+      bind:this={inputElement}
       on:keyup={(e) => {
         if (e.key === 'Enter') executeAndCloseCommand();
         else if (e.key === 'Escape') closeCommandPrompt();
@@ -68,7 +73,6 @@
       on:keydown={(e) => e.stopPropagation()}
     />
   </div>
-{/if}
 
 <style>
   .command-prompt {

@@ -9,12 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "konva": "^9.2.3",
+    "konva": "^9.3.6",
     "svelte": "^4.2.12",
     "svelte-konva": "^0.3.1"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
-    "vite": "^5.0.4"
+    "vite": "^5.2.8"
   }
 }

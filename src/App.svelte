@@ -135,20 +135,37 @@
     animate();
   }
 
+  function createSmoothedSquareWave(treshold = 0.8) {
+    return function smoothedSquareWave(angle) {
+      const wave = Math.sin(angle);
+      if (wave > treshold) {
+        return 1;
+      } else if (wave < -treshold) {
+        return -1;
+      } else {
+        return wave / treshold;
+      }
+    }
+}
+
+  // const waveFunction = Math.sin;
+  const waveFunction = createSmoothedSquareWave();
+
   function switchPositions(minGap, maxGap, speed = 1) {
     let angle = 0; // Start angle
-    const amplitude = (maxGap - minGap) / 2; // Half the range between min and max
-    const midPoint = (maxGap + minGap) / 2; // Average of min and max
-    const angleIncrement = speed * 0.05; // Control the speed of oscillation
+    const amplitude = (maxGap - minGap) / 2;
+    const midPoint = (maxGap + minGap) / 2;
+    const angleIncrement = speed * 0.05;
 
     const animate = () => {
-      gap = midPoint + amplitude * Math.sin(angle); // Sine function for smooth oscillation
-      angle += angleIncrement; // Increment angle to continue the wave
+      // gap = midPoint + amplitude * smoothedSquareWave(angle, 0.95);
+      gap = midPoint + amplitude * waveFunction(angle);
+      angle += angleIncrement;
 
       if (isCycling) {
         requestAnimationFrame(animate);
       } else {
-        gap = midPoint; // Reset gap to midPoint when stopping
+        gap = midPoint;
       }
     };
 

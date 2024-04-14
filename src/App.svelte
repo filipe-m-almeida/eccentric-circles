@@ -331,12 +331,14 @@
       <li>Arrow keys: Move groups</li>
       <li>2: Increase saturation</li>
       <li>1: Decrease saturation</li>
-      <li>r: Reset gap</li>
-      <li>h: Toggle gap visibility</li>
+      <li>r: Reset gap and stop cycling</li>
       <li>Escape: End dragging</li>
-      <li>/: Toggle debug visibility</li>
+      <li>m: Toggle debug visibility</li>
+      <li>/: Open command prompt</li>
       <li>Space: Switch positions</li>
-    </ul>
+      <li>h: Toggle gap visibility</li>
+      <li>?: Toggle key help visibility</li>
+    </ul>?    
   </div>
 {/if}
 

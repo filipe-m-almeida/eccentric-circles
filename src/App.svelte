@@ -149,7 +149,7 @@
 }
 
   // const waveFunction = Math.sin;
-  const waveFunction = createSmoothedSquareWave();
+  const waveFunction = createSmoothedSquareWave(0.9);
 
   function switchPositions(minGap, maxGap, speed = 1) {
     let angle = 0; // Start angle

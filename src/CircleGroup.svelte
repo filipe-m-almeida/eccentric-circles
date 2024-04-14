@@ -4,6 +4,7 @@
 
   export let groupConfig;
   export let gap;
+  export let gapVisible;
 
   // TODO: Get a better name for this
   $: upperGroupConfig = {
@@ -52,5 +53,8 @@
   <Circle config={bigCircleConfig}/>
   <Circle config={smallCircleConfig} />
   <Text config={textConfig} />
-  <Text config={gapTextConfig} />
+  {#if gapVisible}
+    <Text config={gapTextConfig} />
+  {/if}
 </Group>
+

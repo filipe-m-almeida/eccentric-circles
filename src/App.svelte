@@ -23,6 +23,7 @@
     width: 0,
     height: 0,
   };
+  let gapVisible = true;
 
   $: leftGroupConfig = {
     x: x - gap / 2,
@@ -216,6 +217,7 @@
         ' ': () => switchPositions(-gap, gap), // Spacebar
         r: () => ((gap = 0), (isCycling = false)),
         '?': () => (keyHelpVisible = !keyHelpVisible),
+        'h': () => (gapVisible = !gapVisible),
         '/': () => {
           commandPromptVisible = true;
           e.preventDefault();
@@ -304,7 +306,7 @@
 
     {#each [leftGroupConfig, rightGroupConfig] as group, index (index)}
       <div class="circle-group" transition:slide>
-        <CircleGroup groupConfig={group} gap={gap} />
+        <CircleGroup groupConfig={group} gap={gap} gapVisible={gapVisible}/>
       </div>
     {/each}
     </Layer>
@@ -330,6 +332,7 @@
       <li>2: Increase saturation</li>
       <li>1: Decrease saturation</li>
       <li>r: Reset gap</li>
+      <li>h: Toggle gap visibility</li>
       <li>Escape: End dragging</li>
       <li>/: Toggle debug visibility</li>
       <li>Space: Switch positions</li>

@@ -137,25 +137,21 @@
 
   function switchPositions(left, right, speed = 1) {
     const SPEED_FACTOR = 0.005;
-    const delta = (right - left) * speed * SPEED_FACTOR;
+    const amplitude = (right - left) / 2;
+    const midpoint = (right + left) / 2;
+    let time = 0;
 
     const animate = () => {
-      gap += delta;
-      // Test if the gap is within the target range
-      if ((delta < 0 && gap <= right) || (delta > 0 && gap >= right)) {
-        gap = right;
-        if (isCycling) {
-          // swap left and right for next cycle
-          [left, right] = [right, left];
-          switchPositions(left, right, speed);
-        }
-        return;
+      time += speed * SPEED_FACTOR;
+      gap = midpoint + amplitude * Math.sin(time);
+
+      if (isCycling) {
+        requestAnimationFrame(animate);
       } else {
-        if (isCycling) {
-          requestAnimationFrame(animate);
-        }
+        gap = right;g
       }
     };
+
     animate();
   }
 

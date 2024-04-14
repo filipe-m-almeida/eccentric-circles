@@ -135,25 +135,27 @@
     animate();
   }
 
-  function switchPositions(left, right, speed = 1) {
-    const SPEED_FACTOR = 0.005;
-    const amplitude = (right - left) / 2;
-    const midpoint = (right + left) / 2;
-    let time = 0;
+  function switchPositions(minGap, maxGap, speed = 1) {
+    let angle = 0; // Start angle
+    const amplitude = (maxGap - minGap) / 2; // Half the range between min and max
+    const midPoint = (maxGap + minGap) / 2; // Average of min and max
+    const angleIncrement = speed * 0.05; // Control the speed of oscillation
 
     const animate = () => {
-      time += speed * SPEED_FACTOR;
-      gap = midpoint + amplitude * Math.sin(time);
+      gap = midPoint + amplitude * Math.sin(angle); // Sine function for smooth oscillation
+      angle += angleIncrement; // Increment angle to continue the wave
 
       if (isCycling) {
         requestAnimationFrame(animate);
       } else {
-        gap = right;g
+        gap = midPoint; // Reset gap to midPoint when stopping
       }
     };
 
+    // Start the animation
     animate();
   }
+
 
   function executeCommand(command, params) {
     switch (command) {

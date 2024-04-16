@@ -204,6 +204,8 @@
       const map = {
         d: () => adjustGap(1),
         a: () => adjustGap(-1),
+        D: () => adjustGap(10),
+        A: () => adjustGap(-10),
         w: () => adjustStrokeWidth(1),
         s: () => adjustStrokeWidth(-1),
         ArrowLeft: () => moveGroups(-10, 0),

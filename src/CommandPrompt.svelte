@@ -15,8 +15,8 @@
   });
 
   function navigateCommandHistory(step) {
-    currentCommandIndex = Math.max(0, Math.min(commandHistory.length - 1, currentCommandIndex + step));
-    commandInput = commandHistory[currentCommandIndex] || '';
+    currentCommandIndex = Math.max(-1, Math.min(commandHistory.length - 1, currentCommandIndex + step));
+    commandInput = currentCommandIndex === -1 ? '' : (commandHistory[currentCommandIndex] || '');
   }
 
   function previousCommand(e) {

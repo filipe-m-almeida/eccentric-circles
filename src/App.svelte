@@ -1,7 +1,7 @@
 <script>
-  import { Stage, Layer } from 'svelte-konva';
+  import { Circle, Text } from 'svelte-konva';
   import { onMount, onDestroy } from 'svelte';
-  import CircleGroup from './CircleGroup.svelte';
+  import AnaglyphScene from './AnaglyphScene.svelte';
   import CommandPrompt from './CommandPrompt.svelte';
   import { Utils } from './Utils.js';
 
@@ -9,8 +9,6 @@
   let y = 0;
   let gap = 0;
   let depth = 0.4;
-  let saturation = 0;
-  let colorSwitch = true;
   let isDragging = false;
   let lastPosX = 0;
   let lastPosY = 0;
@@ -25,23 +23,40 @@
   };
   let gapVisible = true;
 
-  $: leftGroupConfig = {
-    x: x - gap / 2,
-    y,
-    translate: -10,
-    color: 'rgb(0, 0, 255)',
-    depth: 0.4,
-    strokeWidth: 4,
-  };
+  let strokeWidth = 4;
 
-  $: rightGroupConfig = {
-    x: x + gap / 2,
-    y,
-    translate: 10,
-    color: 'rgb(255, 0, 0)',
-    depth: 0.4,
-    strokeWidth: 4,
-  };
+  $: items = [
+    {
+      id: 'big',
+      component: Circle,
+      depth: 0,
+      config: { radius: 60, strokeWidth }
+    },
+    {
+      id: 'small',
+      component: Circle,
+      depth,
+      config: { radius: 40, strokeWidth }
+    },
+    {
+      id: 'label',
+      component: Text,
+      depth: 0,
+      config: { text: 'Clear', fontSize: 14, x: -15, y: -5, listening: false }
+    },
+    gapVisible && {
+      id: 'gapText',
+      component: Text,
+      depth: 0,
+      config: {
+        text: Utils.pixelsToPrism(gap).toFixed(2) + ' Δ',
+        fontSize: 20,
+        x: -10,
+        y: 80,
+        listening: false
+      }
+    }
+  ].filter(Boolean);
 
   $: debugData = JSON.stringify(
     {
@@ -49,8 +64,6 @@
       y,
       gap,
       depth,
-      saturation,
-      colorSwitch,
       isDragging,
       lastPosX,
       lastPosY,
@@ -72,8 +85,7 @@
   }
 
   function adjustStrokeWidth(delta) {
-    leftGroupConfig.strokeWidth = Math.max(1, leftGroupConfig.strokeWidth + delta);
-    rightGroupConfig.strokeWidth = Math.max(1, rightGroupConfig.strokeWidth + delta);
+    strokeWidth = Math.max(1, strokeWidth + delta);
   }
 
   function moveGroups(xDelta, yDelta) {
@@ -212,8 +224,6 @@
         ArrowRight: () => moveGroups(10, 0),
         ArrowUp: () => moveGroups(0, -10),
         ArrowDown: () => moveGroups(0, 10),
-        '2': () => adjustSaturation(10),
-        '1': () => adjustSaturation(-10),
         Escape: () => endDrag(),
         m: () => (debugVisible = !debugVisible),
         ' ': () => switchPositions(-gap, gap), // Spacebar
@@ -297,23 +307,15 @@
   on:mouseleave={endDrag}
   style="width: {stageConfig.width}px; height: {stageConfig.height}px;"
 >
-  <div class="layer">
-    <Stage
-  config={{
-    width: window.innerWidth,
-    height: window.innerHeight,
-    background: 'black',
-  }}>
-  <Layer>
-
-    {#each [leftGroupConfig, rightGroupConfig] as group, index (index)}
-      <div class="circle-group" transition:slide>
-        <CircleGroup groupConfig={group} gap={gap} gapVisible={gapVisible}/>
-      </div>
-    {/each}
-    </Layer>
-    </Stage>
-  </div>
+  <AnaglyphScene
+    {x}
+    {y}
+    width={stageConfig.width}
+    height={stageConfig.height}
+    {gap}
+    items={items}
+    translate={10}
+  />
 </div>
 
 {#if debugVisible}
@@ -331,8 +333,6 @@
       <li>w: Increase stroke width</li>
       <li>s: Decrease stroke width</li>
       <li>Arrow keys: Move groups</li>
-      <li>2: Increase saturation</li>
-      <li>1: Decrease saturation</li>
       <li>r: Reset gap and stop cycling</li>
       <li>Escape: End dragging</li>
       <li>m: Toggle debug visibility</li>
@@ -340,7 +340,7 @@
       <li>Space: Switch positions</li>
       <li>h: Toggle gap visibility</li>
       <li>?: Toggle key help visibility</li>
-    </ul>?    
+    </ul>
   </div>
 {/if}
 
